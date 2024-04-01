@@ -18,10 +18,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+ 
     steps:
       - name: Checkout code
-       uses: actions/checkout@v2
+       run: git checkout dev
 
       - name: Build and package
         run: ./mvnw clean package -DskipTests
