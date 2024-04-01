@@ -18,29 +18,51 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
- 
     steps:
-      - name: Checkout code
-       run: git checkout dev
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+             ref: main
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
 
       - name: Build and package
-        run: ./mvnw clean package -DskipTests
+        run: |
+          ./mvnw clean package -DskipTests
 
-      - name: Copy JAR to VPS
-       uses: appleboy/scp-action@v1
+      - name: Deploy to VPS
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_NAME }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           source: target/websocket-demo-0.0.1-SNAPSHOT.jar
           target: /project/websocket-demo-0.0.1-SNAPSHOT.jar
+    
+      # - name: Checkout code
+      #  run: git checkout dev
 
-      - name: SSH into VPS and start app
-       uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
-          script: |
-            cd /project
-            java -jar websocket-demo-0.0.1-SNAPSHOT.jar
+      # - name: Build and package
+      #   run: ./mvnw clean package -DskipTests
+
+      # - name: Copy JAR to VPS
+      #  uses: appleboy/scp-action@v1
+      #   with:
+      #     host: ${{ secrets.VPS_HOST }}
+      #     username: ${{ secrets.VPS_NAME }}
+      #     key: ${{ secrets.VPS_PRIVATE_KEY }}
+      #     source: target/websocket-demo-0.0.1-SNAPSHOT.jar
+      #     target: /project/websocket-demo-0.0.1-SNAPSHOT.jar
+
+      # - name: SSH into VPS and start app
+      #  uses: appleboy/ssh-action@v1
+      #   with:
+      #     host: ${{ secrets.VPS_HOST }}
+      #     username: ${{ secrets.VPS_USERNAME }}
+      #     key: ${{ secrets.VPS_PRIVATE_KEY }}
+      #     script: |
+      #       cd /project
+      #       java -jar websocket-demo-0.0.1-SNAPSHOT.jar
