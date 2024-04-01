@@ -51,7 +51,7 @@ jobs:
       # - name: Copy JAR to VPS
       #  uses: appleboy/scp-action@v1
       #   with:
-      #     host: ${{ secrets.VPS_HOST }}
+      #     host: ${{ secrets.VPS_SHOST }}
       #     username: ${{ secrets.VPS_NAME }}
       #     key: ${{ secrets.VPS_PRIVATE_KEY }}
       #     source: target/websocket-demo-0.0.1-SNAPSHOT.jar
