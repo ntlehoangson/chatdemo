@@ -33,14 +33,14 @@ jobs:
       - name: Build and package
         run: mvn clean install
 
-      - name: Deploy to VPS
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_NAME }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
-          source: target/websocket-demo-0.0.1-SNAPSHOT.jar
-          target: /project/websocket-demo-0.0.1-SNAPSHOT.jar
+      # - name: Deploy to VPS
+      #   uses: appleboy/scp-action@v0.1.7
+      #   with:
+      #     host: ${{ secrets.VPS_HOST }}
+      #     username: ${{ secrets.VPS_NAME }}
+      #     key: ${{ secrets.VPS_PRIVATE_KEY }}
+      #     source: target/websocket-demo-0.0.1-SNAPSHOT.jar
+      #     target: /project/websocket-demo-0.0.1-SNAPSHOT.jar
     
       # - name: Checkout code 
       #  run: git checkout dev
@@ -57,12 +57,13 @@ jobs:
       #     source: target/websocket-demo-0.0.1-SNAPSHOT.jar
       #     target: /project/websocket-demo-0.0.1-SNAPSHOT.jar 
 
-      # - name: SSH into VPS and start app
-      #  uses: appleboy/ssh-action@v1
-      #   with:
-      #     host: ${{ secrets.VPS_HOST }}
-      #     username: ${{ secrets.VPS_USERNAME }}
-      #     key: ${{ secrets.VPS_PRIVATE_KEY }}
-      #     script: |
-      #       cd /project
-      #       java -jar websocket-demo-0.0.1-SNAPSHOT.jar
+      - name: SSH into VPS and start app
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_NAME }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: 
+            scp target//websocket-demo-0.0.1-SNAPSHOT.jar  ${{ secrets.VPS_NAME }}@${{ secrets.VPS_SHOST }}:/project/websocket-demo-0.0.1-SNAPSHOT.jar 
+            cd /project
+            java -jar websocket-demo-0.0.1-SNAPSHOT.jar
