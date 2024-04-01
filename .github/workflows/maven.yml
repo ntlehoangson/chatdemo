@@ -42,7 +42,7 @@ jobs:
           source: target/websocket-demo-0.0.1-SNAPSHOT.jar
           target: /project/websocket-demo-0.0.1-SNAPSHOT.jar
     
-      # - name: Checkout code
+      # - name: Checkout code 
       #  run: git checkout dev
 
       # - name: Build and package
